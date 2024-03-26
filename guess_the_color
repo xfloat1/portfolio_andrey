@@ -1,0 +1,96 @@
+import random
+
+def generation():
+    i = 0
+    generated = []
+    while i != 4:
+        colors = colours = random.choice(["красный", "синий", "зеленый", "оранжевый", 
+                                  "фиолетовый", "белый", "черный", "желтый"])
+        generated.append(colors[0:3]) 
+        i += 1
+    return generated
+
+original_generated = []
+generated = generation()
+original_generated += generated
+
+def inputs(original_generated):
+    f = 0
+    answer = []
+    while f != len(original_generated):
+        print("Позиция № ", f+1)
+        guess = input("Угадайте цвет на этой позиции: ")
+        guess = guess.lower()
+        answer.append(guess[0:3])
+        f += 1
+    return answer
+
+def right_position1(original_generated, generated, answer):
+    r1 = q = g = 0
+    generated = []
+    generated += original_generated
+    while q != len(generated):
+        if generated[q] == answer[q]:
+            del generated[q]
+            del answer[q]
+            g += 1 
+            q = 0
+        else:
+            q += 1
+        r1 = g # r1 = right color in right position
+    tuple_r_and_new = (r1, generated, answer)
+    return tuple_r_and_new
+
+def wrong_position(original_generated, new_generated, new_answer):
+        word = w1 = o = s = 0
+        d = 1
+        while o != len(original_generated):
+            while word != len(original_generated):
+                if new_answer[o] == original_generated[word]:
+                    s = 1
+                    word = len(original_generated)
+                else:
+                    s += 0
+                    word += 1
+                w1 += s # w1 = right color in wrong position
+                s = 0
+            if len(new_answer) <= d: # проверяет, дошел ли до конца new_answer или нет.
+                o = len(original_generated)
+            else:
+                word = 0
+                o += 1
+            d += 1
+        return w1     
+        
+def main():
+    print("""ИГРА - "УГАДАЙ ЦВЕТ!"
+             Загадно 4 цвета, вам нужно отгадать цвет и то,
+             на какой позиции он находится.
+             
+             Цвета которые могут быть загаданы:
+             красный, синий, зеленый, оранжевый, 
+             фиолетовый, белый, черный, желтый.
+          """)
+    tries = 0
+    play = True
+    while play == True:
+        answer1 = inputs(original_generated)
+        answer = answer1
+        right_position = right_position1(original_generated, generated, answer)
+        r = right_position[0]
+        new_generated = right_position[1]
+        new_answer = right_position[2]
+        tries += 1
+        w = 0
+        if r == 4:
+            print("\nКол-во угаданных цветов в правильной позиции:", r)
+            print("Кол-во угаданных цветов в неправильной позиции:", w, "\n")
+            play = False
+        else:     
+            w = wrong_position(original_generated, new_generated, new_answer)
+            print("\nКол-во угаданных цветов в правильной позиции:", r)
+            print("Кол-во угаданных цветов в неправильной позиции:", w, "\n")
+            print("ПОПРОБУЙ ЕЩЕ РАЗ!\n")
+    print("ВЫ УГАДАЛИ ВСЕ ЦВЕТА!")
+    print("Cовершенно ПопИТок:", tries)    
+main()
