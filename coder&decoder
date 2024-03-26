@@ -1,0 +1,88 @@
+alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", 
+            "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", 
+            "u", "v", "w", "x", "y", "z", " ", ",", ".", ";", 
+            ":", "-"]
+
+def coding():
+    codedText = ""
+    simpleText = input("Enter the text you wanna to code: ")
+    simpleText = simpleText.lower()
+    num = int(input("Enter the coding level(max = 25): "))
+    if num <= 25:
+        for i in simpleText:
+            if i in alphabet:
+                exit = False
+                indexMain = alphabet.index(i)
+                if indexMain < 26:
+                    beyond_alphabet = indexMain + num
+                    if beyond_alphabet >= 27:
+                        indexSecond = 27 - indexMain
+                        index = num - indexSecond
+                    else:
+                        indexSecond = indexMain + num
+                        index = indexSecond - 1
+                else:
+                    index = indexMain
+                symbol = alphabet[index]
+                codedText += symbol
+            else:
+                exit = True
+                print("WRONG LETTER OR WORD!")    
+        if exit == False:
+            print("\nCODED =", codedText.capitalize() + "\nCoding level:", num)    
+    else:
+        print("\nWRONG CODING LEVEL(max = 25)")
+    main()
+    
+def decoding():
+    decodedText = ""
+    codedText = input("Enter the coded text: ")
+    codedText = codedText.lower()
+    num = int(input("Enter the coding level(max = 25): "))
+    num -= 1
+    if num <= 25:
+        for i in codedText:
+            if i in alphabet:
+                exit = False
+                indexMain = alphabet.index(i)
+                if indexMain < 26:
+                    if num > indexMain:
+                        indexSecond = num - indexMain
+                        index = 26 - indexSecond
+                    elif num < indexMain:
+                        index = indexMain - num
+                    else:
+                        index = num - indexMain          
+                else:
+                    index = indexMain
+                symbol = alphabet[index]
+                decodedText += symbol
+            else:
+                exit = True
+                print("WRONG LETTER OR WORD!")
+        if exit == False:
+            print("\nDECODED =", decodedText.capitalize() + "\nCoding level:", num+1)
+    else:
+        print("\nWRONG CODING LEVEL(max = 25)")
+    main()
+
+def exit():
+    print("\n--------------------\n")
+
+def main():
+    print("""
+1) Make a code
+2) Decode a message
+3) Quit
+""")
+    choice = int(input("Enter your selection: "))
+    if choice == 1:
+        coding()
+    elif choice == 2:
+        decoding()
+    elif choice == 3:
+        exit()
+    else:
+        print("Wrong choice, try again!")
+        
+main()
